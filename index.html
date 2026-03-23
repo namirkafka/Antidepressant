@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antidepressant Brain Effects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Interactive neuroscience explainer</p>
+          <h1>How antidepressants can shift mood systems over time</h1>
+          <p class="lede">A simple interactive guide to how treatment may affect emotion, stress, and motivation.</p>
+        </div>
+        <div class="hero-note">
+          <span>Educational visualization</span>
+          <p>Real effects vary from person to person.</p>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section class="panel controls-panel">
+          <div class="panel-heading">
+            <p class="kicker">Control panel</p>
+            <h2>Adjust the model</h2>
+          </div>
+
+          <section class="how-to-use" aria-label="How to use this page">
+            <strong>How to use this page</strong>
+            <p>Pick a treatment, move the sliders, click a chemical or system.</p>
+          </section>
+
+          <label class="field">
+            <span>Medication class</span>
+            <select id="medication-select" aria-label="Medication class">
+              <option value="ssri">SSRI</option>
+              <option value="snri">SNRI</option>
+              <option value="atypical">Atypical</option>
+              <option value="tricyclic">Tricyclic</option>
+            </select>
+          </label>
+
+          <section class="treatment-help" aria-label="Treatment type explanation">
+            <strong id="treatment-name">SSRI</strong>
+            <p id="treatment-description">Common first-line antidepressants that mainly affect serotonin.</p>
+            <span id="treatment-examples">Examples: sertraline, fluoxetine, escitalopram</span>
+          </section>
+
+          <label class="field slider-field" for="timeline">
+            <span>Weeks since starting treatment</span>
+            <input id="timeline" type="range" min="0" max="12" step="1" value="4" />
+            <div class="slider-meta">
+              <strong id="week-label">Week 4</strong>
+              <span id="timeline-description">Early adaptation phase with subtle shifts in emotional regulation.</span>
+            </div>
+          </label>
+
+          <label class="field slider-field" for="dose-strength">
+            <span>Dose example</span>
+            <input id="dose-strength" type="range" min="1" max="3" step="1" value="2" />
+            <div class="slider-meta">
+              <strong id="dose-label">Typical example</strong>
+              <span id="dose-description">A simple middle example, not a real prescription recommendation.</span>
+            </div>
+          </label>
+
+          <label class="field slider-field" for="stress-level">
+            <span>Current stress sensitivity</span>
+            <input id="stress-level" type="range" min="0" max="100" step="5" value="60" />
+            <div class="slider-meta">
+              <strong id="stress-label">Elevated stress load</strong>
+              <span id="stress-description">Higher stress tends to keep threat and body-alert systems more activated.</span>
+            </div>
+          </label>
+
+          <div class="summary-stack">
+            <article class="summary-card summary-primary">
+              <span>Biggest change right now</span>
+              <strong id="headline-summary">Alarm / anxiety system</strong>
+              <p id="why-summary">Why: early treatment with a typical example and elevated stress makes this system stand out most.</p>
+            </article>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span>When changes may show</span>
+                <strong id="onset-window">2 to 6 weeks</strong>
+              </article>
+              <article class="stat-card">
+                <span>What this treatment usually does</span>
+                <strong id="class-summary">Often dampens threat reactivity and supports mood stabilization.</strong>
+              </article>
+            </div>
+          </div>
+
+          <button type="button" class="reset-button" id="reset-model">Reset example</button>
+        </section>
+
+        <section class="panel visualization-panel">
+          <div class="panel-heading">
+            <p class="kicker">System levels</p>
+            <h2>Bars rise as the effect gets stronger</h2>
+          </div>
+
+          <section class="chart-signals" aria-label="Main brain chemicals involved">
+            <div class="chart-signals-header">
+              <strong>1. Chemicals this treatment targets</strong>
+              <p class="signal-summary" id="chemical-summary">This class mainly targets serotonin. Those chemical shifts can then affect the system bars below.</p>
+            </div>
+            <div class="chemical-layout">
+              <div class="chemical-chart" aria-label="Treatment chemical chart">
+                <div class="chemical-frame">
+                  <div class="chemical-bars">
+                    <button type="button" class="chemical-bar" data-chemical="serotonin" aria-label="Serotonin chemical">
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-serotonin-fill"></span></span>
+                      <span class="chemical-value" id="chemical-serotonin-value">Main</span>
+                      <span class="chemical-label">Serotonin</span>
+                    </button>
+                    <button type="button" class="chemical-bar" data-chemical="norepinephrine" aria-label="Norepinephrine chemical">
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-norepinephrine-fill"></span></span>
+                      <span class="chemical-value" id="chemical-norepinephrine-value">Small</span>
+                      <span class="chemical-label">Norepinephrine</span>
+                    </button>
+                    <button type="button" class="chemical-bar" data-chemical="dopamine" aria-label="Dopamine chemical">
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-dopamine-fill"></span></span>
+                      <span class="chemical-value" id="chemical-dopamine-value">Small</span>
+                      <span class="chemical-label">Dopamine</span>
+                    </button>
+                  </div>
+                </div>
+                <p class="chart-note">Click a chemical bar to learn what it does.</p>
+              </div>
+
+              <aside class="chemical-card" id="chemical-card">
+                <p class="kicker">Chemical guide</p>
+                <h3 id="chemical-name">Serotonin</h3>
+                <p id="chemical-description">Often linked to mood balance, worry, and emotional steadiness.</p>
+                <div class="region-metrics">
+                  <div>
+                    <span>Plain meaning</span>
+                    <strong id="chemical-plain">Often discussed in depression and anxiety treatment.</strong>
+                  </div>
+                  <div>
+                    <span>May connect to</span>
+                    <strong id="chemical-connect">Mood balance and emotional regulation.</strong>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <p class="flow-note">Treatment type -> brain chemicals -> brain systems -> day-to-day feelings</p>
+
+          <div class="brain-stage">
+            <div class="systems-chart" role="group" aria-label="Interactive mood systems chart">
+              <div class="systems-chart-head">
+                <strong>2. Brain systems that may shift</strong>
+                <p>These bars show the possible downstream effect in this simplified model.</p>
+              </div>
+              <div class="chart-frame">
+                <div class="chart-bars">
+                  <button type="button" class="region-group region-bar" data-region="prefrontal" aria-label="Prefrontal cortex region">
+                    <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
+                    <span class="bar-value">Moderate</span>
+                    <span class="bar-label">Focus</span>
+                    <span class="bar-sub">Prefrontal</span>
+                  </button>
+
+                  <button type="button" class="region-group region-bar" data-region="amygdala" aria-label="Amygdala region">
+                    <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
+                    <span class="bar-value">Moderate</span>
+                    <span class="bar-label">Alarm</span>
+                    <span class="bar-sub">Amygdala</span>
+                  </button>
+
+                  <button type="button" class="region-group region-bar" data-region="hippocampus" aria-label="Hippocampus region">
+                    <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
+                    <span class="bar-value">Moderate</span>
+                    <span class="bar-label">Recovery</span>
+                    <span class="bar-sub">Hippocampus</span>
+                  </button>
+
+                  <button type="button" class="region-group region-bar" data-region="striatum" aria-label="Striatum region">
+                    <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
+                    <span class="bar-value">Moderate</span>
+                    <span class="bar-label">Reward</span>
+                    <span class="bar-sub">Striatum</span>
+                  </button>
+
+                  <button type="button" class="region-group region-bar" data-region="insula" aria-label="Insula region">
+                    <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
+                    <span class="bar-value">Moderate</span>
+                    <span class="bar-label">Body tension</span>
+                    <span class="bar-sub">Insula</span>
+                  </button>
+                </div>
+              </div>
+
+              <p class="chart-note">Click a system bar to see what it may mean in plain language.</p>
+            </div>
+
+            <aside class="region-card" id="region-card">
+              <p class="kicker">Selected region</p>
+              <h3 id="region-name">Prefrontal cortex</h3>
+              <p id="region-effect">Helps with focus and emotional control.</p>
+              <div class="region-metrics">
+                <div>
+                  <span>Effect level</span>
+                  <strong id="region-level">Moderate</strong>
+                </div>
+                <div>
+                  <span>Estimated direction</span>
+                  <strong id="region-direction">More stable regulation</strong>
+                </div>
+                <div>
+                  <span>What it may feel like</span>
+                  <strong id="region-plain">Less emotional whiplash.</strong>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel timeline-panel">
+          <div class="panel-heading">
+            <p class="kicker">Treatment arc</p>
+            <h2>What tends to change first</h2>
+          </div>
+
+          <div class="timeline-strip" id="timeline-strip" aria-label="Treatment timeline"></div>
+        </section>
+
+        <section class="panel explainer-panel">
+          <details class="glossary-accordion">
+            <summary>What do these terms mean?</summary>
+            <div class="glossary-grid">
+              <article class="glossary-card">
+                <strong>Prefrontal cortex</strong>
+                <p>Helps with planning, focus, decision-making, and slowing yourself down before reacting.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Amygdala</strong>
+                <p>The brain's fast alarm system. It helps detect threat, fear, and emotional urgency.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Hippocampus</strong>
+                <p>Helps with memory, context, and how the brain recovers from long-term stress.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Striatum</strong>
+                <p>Helps with motivation, reward, interest, and the feeling that something is worth doing.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Insula</strong>
+                <p>Tracks internal body signals like tension, discomfort, calm, and emotional intensity.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Effect level</strong>
+                <p>Shows how strongly this simplified model thinks a system may be shifting. It does not mean good or bad by itself.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Serotonin</strong>
+                <p>Often discussed in depression and anxiety treatment. It is commonly linked to mood balance and emotional steadiness.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Norepinephrine</strong>
+                <p>Often linked to alertness, energy, attention, and the body's stress response.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Dopamine</strong>
+                <p>Often linked to reward, motivation, drive, pleasure, and the sense that something feels worth doing.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>SSRI</strong>
+                <p>A common antidepressant group that mainly affects serotonin. Examples include sertraline and fluoxetine.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>SNRI</strong>
+                <p>An antidepressant group that mainly affects serotonin and norepinephrine. Examples include venlafaxine and duloxetine.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Atypical antidepressants</strong>
+                <p>A mixed group of antidepressants that do not all work the same way. Some may involve dopamine more than SSRIs do.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Tricyclic antidepressants</strong>
+                <p>An older antidepressant group with broader effects across brain signaling systems and often more side effects.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Dose example</strong>
+                <p>A teaching control used on this site. It is not a real prescription recommendation and only changes the example strength in the model.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Current stress sensitivity</strong>
+                <p>A simple way to show how a heavier or lighter stress burden can change which systems stand out.</p>
+              </article>
+              <article class="glossary-card">
+                <strong>Weeks since starting treatment</strong>
+                <p>Used to show that antidepressants often do not feel fully effective right away and may change over time.</p>
+              </article>
+            </div>
+          </details>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

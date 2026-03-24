@@ -238,7 +238,7 @@ function describeDose(value) {
 }
 
 function describeStress(value) {
-  if (value < 35) {
+  if (value <= 1) {
     return {
       label: "Lower stress load",
       description: "A calmer starting point.",
@@ -248,7 +248,7 @@ function describeStress(value) {
     };
   }
 
-  if (value < 70) {
+  if (value === 2) {
     return {
       label: "Elevated stress load",
       description: "More stress in the system.",
@@ -334,8 +334,8 @@ function shortDoseLabel(value) {
 }
 
 function shortStressLabel(value) {
-  if (value < 35) return "Lower";
-  if (value < 70) return "Elevated";
+  if (value <= 1) return "Lower";
+  if (value === 2) return "Elevated";
   return "High";
 }
 
@@ -485,7 +485,7 @@ resetButton.addEventListener("click", () => {
   medicationSelect.value = "ssri";
   timelineInput.value = "4";
   doseStrengthInput.value = "2";
-  stressLevelInput.value = "60";
+  stressLevelInput.value = "2";
   selectedRegion = "prefrontal";
   selectedChemical = "serotonin";
   updateVisualization();

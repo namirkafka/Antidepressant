@@ -34,6 +34,8 @@ const timelineFocusWeek = document.getElementById("timeline-focus-week");
 const timelineFocusDescription = document.getElementById("timeline-focus-description");
 const timelineFocusSummary = document.getElementById("timeline-focus-summary");
 const regionGroups = Array.from(document.querySelectorAll(".region-group"));
+const doseThumbLabel = document.getElementById("dose-thumb-label");
+const stressThumbLabel = document.getElementById("stress-thumb-label");
 
 const regionMeta = {
   prefrontal: {
@@ -311,6 +313,32 @@ function strongestChemicalKey(profile) {
   return Object.entries(profile.chemicals).sort((a, b) => order[b[1]] - order[a[1]])[0][0];
 }
 
+const SLIDER_V_INPUT_WIDTH = 148;
+const SLIDER_V_CONTAINER_HEIGHT = 160;
+const SLIDER_V_OFFSET = (SLIDER_V_CONTAINER_HEIGHT - SLIDER_V_INPUT_WIDTH) / 2;
+const SLIDER_V_THUMB_RADIUS = 9;
+const SLIDER_V_TRAVEL = SLIDER_V_INPUT_WIDTH - 2 * SLIDER_V_THUMB_RADIUS;
+
+function positionThumbLabel(input, labelEl) {
+  const min = Number(input.min);
+  const max = Number(input.max);
+  const progress = (Number(input.value) - min) / (max - min);
+  const thumbY = SLIDER_V_OFFSET + SLIDER_V_INPUT_WIDTH - SLIDER_V_THUMB_RADIUS - progress * SLIDER_V_TRAVEL;
+  labelEl.style.top = `${thumbY}px`;
+}
+
+function shortDoseLabel(value) {
+  if (value <= 1) return "Lower";
+  if (value === 2) return "Typical";
+  return "Higher";
+}
+
+function shortStressLabel(value) {
+  if (value < 35) return "Lower";
+  if (value < 70) return "Elevated";
+  return "High";
+}
+
 function timelineCardForWeek(week) {
   return timelineCards.find((card) => week >= card.range[0] && week <= card.range[1]) ?? timelineCards[timelineCards.length - 1];
 }
@@ -380,6 +408,11 @@ function updateVisualization() {
   const values = {};
 
   weekLabel.textContent = `Week ${week}`;
+
+  doseThumbLabel.textContent = shortDoseLabel(doseValue);
+  positionThumbLabel(doseStrengthInput, doseThumbLabel);
+  stressThumbLabel.textContent = shortStressLabel(stressValue);
+  positionThumbLabel(stressLevelInput, stressThumbLabel);
   if (timelineDescription) {
     timelineDescription.textContent = weekNarrative(week);
   }

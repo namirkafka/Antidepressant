@@ -61,18 +61,20 @@
             <div class="sliders-v-row">
               <div class="slider-v-field">
                 <span class="slider-v-label">Dose example</span>
-                <div class="slider-v-track">
-                  <input id="dose-strength" type="range" min="1" max="3" step="1" value="2" aria-label="Dose example" />
+                <div class="slider-v-wrapper">
+                  <div class="slider-v-track">
+                    <input id="dose-strength" type="range" min="1" max="3" step="1" value="2" aria-label="Dose example" />
+                  </div>
+                  <span class="slider-v-thumb-label" id="dose-thumb-label">Typical</span>
                 </div>
-              </div>
-              <div class="slider-v-range-labels">
-                <span class="slider-v-range-label">High</span>
-                <span class="slider-v-range-label">Low</span>
               </div>
               <div class="slider-v-field">
                 <span class="slider-v-label">Stress sensitivity</span>
-                <div class="slider-v-track">
-                  <input id="stress-level" type="range" min="0" max="100" step="5" value="60" aria-label="Stress sensitivity" />
+                <div class="slider-v-wrapper">
+                  <div class="slider-v-track">
+                    <input id="stress-level" type="range" min="0" max="100" step="5" value="60" aria-label="Stress sensitivity" />
+                  </div>
+                  <span class="slider-v-thumb-label slider-v-thumb-label--left" id="stress-thumb-label">Elevated</span>
                 </div>
               </div>
             </div>

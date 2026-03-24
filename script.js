@@ -4,10 +4,6 @@ const doseStrengthInput = document.getElementById("dose-strength");
 const stressLevelInput = document.getElementById("stress-level");
 const weekLabel = document.getElementById("week-label");
 const timelineDescription = document.getElementById("timeline-description");
-const doseLabel = document.getElementById("dose-label");
-const doseDescription = document.getElementById("dose-description");
-const stressLabel = document.getElementById("stress-label");
-const stressDescription = document.getElementById("stress-description");
 const resetButton = document.getElementById("reset-model");
 const treatmentName = document.getElementById("treatment-name");
 const treatmentDescription = document.getElementById("treatment-description");
@@ -33,7 +29,10 @@ const regionEffect = document.getElementById("region-effect");
 const regionLevel = document.getElementById("region-level");
 const regionDirection = document.getElementById("region-direction");
 const regionPlain = document.getElementById("region-plain");
-const timelineStrip = document.getElementById("timeline-strip");
+const timelineFocusTitle = document.getElementById("timeline-focus-title");
+const timelineFocusWeek = document.getElementById("timeline-focus-week");
+const timelineFocusDescription = document.getElementById("timeline-focus-description");
+const timelineFocusSummary = document.getElementById("timeline-focus-summary");
 const regionGroups = Array.from(document.querySelectorAll(".region-group"));
 
 const regionMeta = {
@@ -159,24 +158,40 @@ const medicationProfiles = {
 
 const timelineCards = [
   {
+    phase: "Signal spark",
     title: "Hours to days",
     description: "Neurochemical levels shift quickly, but subjective mood change is usually limited this early.",
     range: [0, 1],
+    shift: "Fast chemical movement happens before obvious emotional relief.",
+    feel: "Side effects or subtle shifts can show up before benefits feel clear.",
+    jumpWeek: 1,
   },
   {
+    phase: "Bias softening",
     title: "Weeks 1 to 2",
     description: "Emotional bias and stress reactivity can begin to soften before a full mood response is obvious.",
     range: [2, 3],
+    shift: "Threat bias and emotional urgency may begin to loosen.",
+    feel: "Some people notice slightly less dread, friction, or internal intensity.",
+    jumpWeek: 2,
   },
   {
+    phase: "Clinical response",
     title: "Weeks 3 to 6",
     description: "Clinical improvement often becomes more noticeable as regulation networks adapt.",
     range: [4, 6],
+    shift: "Regulation networks start having clearer day-to-day impact.",
+    feel: "Mood changes can become easier to notice and recover from.",
+    jumpWeek: 4,
   },
   {
+    phase: "Consolidation",
     title: "Weeks 7 to 12",
     description: "Sustained changes may include improved resilience, motivation, and cognitive flexibility.",
     range: [7, 12],
+    shift: "Benefits can stabilize into something more durable and consistent.",
+    feel: "Recovery after stress may get steadier, with more flexibility and drive.",
+    jumpWeek: 8,
   },
 ];
 
@@ -296,6 +311,11 @@ function strongestChemicalKey(profile) {
   return Object.entries(profile.chemicals).sort((a, b) => order[b[1]] - order[a[1]])[0][0];
 }
 
+function timelineCardForWeek(week) {
+  return timelineCards.find((card) => week >= card.range[0] && week <= card.range[1]) ?? timelineCards[timelineCards.length - 1];
+}
+
+
 function updateChemicalSignals(profile) {
   const serotonin = chemicalLevelDetails(profile.chemicals.serotonin);
   const norepinephrine = chemicalLevelDetails(profile.chemicals.norepinephrine);
@@ -328,17 +348,13 @@ function updateChemicalSignals(profile) {
   });
 }
 
-function renderTimeline(week) {
-  timelineStrip.innerHTML = "";
+function updateCurrentPhase(week) {
+  const activeCard = timelineCardForWeek(week);
 
-  timelineCards.forEach((card) => {
-    const element = document.createElement("article");
-    const active = week >= card.range[0] && week <= card.range[1];
-
-    element.className = `timeline-card${active ? " active" : ""}`;
-    element.innerHTML = `<strong>${card.title}</strong><p>${card.description}</p>`;
-    timelineStrip.appendChild(element);
-  });
+  timelineFocusTitle.textContent = activeCard.phase;
+  timelineFocusWeek.textContent = `Week ${week} · ${activeCard.title}`;
+  timelineFocusDescription.textContent = activeCard.description;
+  timelineFocusSummary.textContent = `${activeCard.shift} ${activeCard.feel}`;
 }
 
 function updateRegionCard(values) {
@@ -364,11 +380,9 @@ function updateVisualization() {
   const values = {};
 
   weekLabel.textContent = `Week ${week}`;
-  timelineDescription.textContent = weekNarrative(week);
-  doseLabel.textContent = dose.label;
-  doseDescription.textContent = dose.description;
-  stressLabel.textContent = stress.label;
-  stressDescription.textContent = stress.description;
+  if (timelineDescription) {
+    timelineDescription.textContent = weekNarrative(week);
+  }
   treatmentName.textContent = profile.label;
   treatmentDescription.textContent = profile.helper;
   treatmentExamples.textContent = profile.examples;
@@ -383,12 +397,10 @@ function updateVisualization() {
     const region = group.dataset.region;
     const value = computeRegionValue(profile, region, week, settings);
     const barFill = group.querySelector(".bar-fill");
-    const barValue = group.querySelector(".bar-value");
 
     values[region] = value;
 
     barFill.style.height = `${Math.round(value * 100)}%`;
-    barValue.textContent = intensityToLabel(value);
     group.classList.toggle("active", region === selectedRegion);
     group.setAttribute("aria-pressed", String(region === selectedRegion));
     group.setAttribute(
@@ -405,7 +417,7 @@ function updateVisualization() {
   headlineSummary.textContent = buildHeadlineSummary(strongestRegion);
   whySummary.textContent = buildWhySummary(week, dose, stress, strongestRegion);
   updateRegionCard(values);
-  renderTimeline(week);
+  updateCurrentPhase(week);
 }
 
 regionGroups.forEach((group) => {
@@ -434,6 +446,8 @@ medicationSelect.addEventListener("change", updateVisualization);
 timelineInput.addEventListener("input", updateVisualization);
 doseStrengthInput.addEventListener("input", updateVisualization);
 stressLevelInput.addEventListener("input", updateVisualization);
+
+
 resetButton.addEventListener("click", () => {
   medicationSelect.value = "ssri";
   timelineInput.value = "4";

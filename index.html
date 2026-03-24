@@ -17,12 +17,8 @@
       <header class="hero">
         <div class="hero-copy">
           <p class="eyebrow">Interactive neuroscience explainer</p>
-          <h1>How antidepressants can shift mood systems over time</h1>
+          <h1>How <span class="tooltip-word" data-tooltip="Medications prescribed to treat depression and related conditions. They work by adjusting the availability of brain chemicals like serotonin, norepinephrine, and dopamine. Common classes include SSRIs, SNRIs, tricyclics, and atypicals.">antidepressants</span> can shift mood systems over time</h1>
           <p class="lede">A simple interactive guide to how treatment may affect emotion, stress, and motivation.</p>
-        </div>
-        <div class="hero-note">
-          <span>Educational visualization</span>
-          <p>Real effects vary from person to person.</p>
         </div>
       </header>
 
@@ -32,11 +28,6 @@
             <p class="kicker">Control panel</p>
             <h2>Adjust the model</h2>
           </div>
-
-          <section class="how-to-use" aria-label="How to use this page">
-            <strong>How to use this page</strong>
-            <p>Pick a treatment, move the sliders, click a chemical or system.</p>
-          </section>
 
           <label class="field">
             <span>Medication class</span>
@@ -49,52 +40,54 @@
           </label>
 
           <section class="treatment-help" aria-label="Treatment type explanation">
+            <span class="card-label">Medication profile</span>
             <strong id="treatment-name">SSRI</strong>
             <p id="treatment-description">Common first-line antidepressants that mainly affect serotonin.</p>
-            <span id="treatment-examples">Examples: sertraline, fluoxetine, escitalopram</span>
+            <span class="card-meta" id="treatment-examples">Examples: sertraline, fluoxetine, escitalopram</span>
+            <p class="profile-onset">Changes may show in <strong id="onset-window">2 to 6 weeks</strong>.</p>
           </section>
 
-          <label class="field slider-field" for="timeline">
-            <span>Weeks since starting treatment</span>
-            <input id="timeline" type="range" min="0" max="12" step="1" value="4" />
-            <div class="slider-meta">
-              <strong id="week-label">Week 4</strong>
-              <span id="timeline-description">Early adaptation phase with subtle shifts in emotional regulation.</span>
+          <div class="sliders-block">
+            <strong class="week-badge" id="week-label">Week 4</strong>
+            <div class="slider-h-section">
+              <span class="slider-h-label">Weeks since starting</span>
+              <div class="slider-control">
+                <input id="timeline" type="range" min="0" max="12" step="1" value="4" aria-label="Weeks since starting" />
+              </div>
             </div>
-          </label>
 
-          <label class="field slider-field" for="dose-strength">
-            <span>Dose example</span>
-            <input id="dose-strength" type="range" min="1" max="3" step="1" value="2" />
-            <div class="slider-meta">
-              <strong id="dose-label">Typical example</strong>
-              <span id="dose-description">A simple middle example, not a real prescription recommendation.</span>
-            </div>
-          </label>
+            <div class="sliders-block-divider"></div>
 
-          <label class="field slider-field" for="stress-level">
-            <span>Current stress sensitivity</span>
-            <input id="stress-level" type="range" min="0" max="100" step="5" value="60" />
-            <div class="slider-meta">
-              <strong id="stress-label">Elevated stress load</strong>
-              <span id="stress-description">Higher stress tends to keep threat and body-alert systems more activated.</span>
+            <div class="sliders-v-row">
+              <div class="slider-v-field">
+                <span class="slider-v-label">Dose example</span>
+                <div class="slider-v-track">
+                  <input id="dose-strength" type="range" min="1" max="3" step="1" value="2" aria-label="Dose example" />
+                </div>
+              </div>
+              <div class="slider-v-range-labels">
+                <span class="slider-v-range-label">High</span>
+                <span class="slider-v-range-label">Low</span>
+              </div>
+              <div class="slider-v-field">
+                <span class="slider-v-label">Stress sensitivity</span>
+                <div class="slider-v-track">
+                  <input id="stress-level" type="range" min="0" max="100" step="5" value="60" aria-label="Stress sensitivity" />
+                </div>
+              </div>
             </div>
-          </label>
+          </div>
 
           <div class="summary-stack">
             <article class="summary-card summary-primary">
-              <span>Biggest change right now</span>
+              <span class="card-label">Biggest change right now</span>
               <strong id="headline-summary">Alarm / anxiety system</strong>
               <p id="why-summary">Why: early treatment with a typical example and elevated stress makes this system stand out most.</p>
             </article>
 
             <div class="stats-grid">
               <article class="stat-card">
-                <span>When changes may show</span>
-                <strong id="onset-window">2 to 6 weeks</strong>
-              </article>
-              <article class="stat-card">
-                <span>What this treatment usually does</span>
+                <span class="card-label">What this treatment usually does</span>
                 <strong id="class-summary">Often dampens threat reactivity and supports mood stabilization.</strong>
               </article>
             </div>
@@ -106,7 +99,7 @@
         <section class="panel visualization-panel">
           <div class="panel-heading">
             <p class="kicker">System levels</p>
-            <h2>Bars rise as the effect gets stronger</h2>
+            <h2>Signals shift as the effect gets stronger</h2>
           </div>
 
           <section class="chart-signals" aria-label="Main brain chemicals involved">
@@ -119,27 +112,26 @@
                 <div class="chemical-frame">
                   <div class="chemical-bars">
                     <button type="button" class="chemical-bar" data-chemical="serotonin" aria-label="Serotonin chemical">
-                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-serotonin-fill"></span></span>
                       <span class="chemical-value" id="chemical-serotonin-value">Main</span>
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-serotonin-fill"></span></span>
                       <span class="chemical-label">Serotonin</span>
                     </button>
                     <button type="button" class="chemical-bar" data-chemical="norepinephrine" aria-label="Norepinephrine chemical">
-                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-norepinephrine-fill"></span></span>
                       <span class="chemical-value" id="chemical-norepinephrine-value">Small</span>
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-norepinephrine-fill"></span></span>
                       <span class="chemical-label">Norepinephrine</span>
                     </button>
                     <button type="button" class="chemical-bar" data-chemical="dopamine" aria-label="Dopamine chemical">
-                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-dopamine-fill"></span></span>
                       <span class="chemical-value" id="chemical-dopamine-value">Small</span>
+                      <span class="chemical-column" aria-hidden="true"><span class="chemical-fill" id="chemical-dopamine-fill"></span></span>
                       <span class="chemical-label">Dopamine</span>
                     </button>
                   </div>
                 </div>
-                <p class="chart-note">Click a chemical bar to learn what it does.</p>
               </div>
 
               <aside class="chemical-card" id="chemical-card">
-                <p class="kicker">Chemical guide</p>
+                <p class="card-label">Chemical guide</p>
                 <h3 id="chemical-name">Serotonin</h3>
                 <p id="chemical-description">Often linked to mood balance, worry, and emotional steadiness.</p>
                 <div class="region-metrics">
@@ -156,8 +148,6 @@
             </div>
           </section>
 
-          <p class="flow-note">Treatment type -> brain chemicals -> brain systems -> day-to-day feelings</p>
-
           <div class="brain-stage">
             <div class="systems-chart" role="group" aria-label="Interactive mood systems chart">
               <div class="systems-chart-head">
@@ -168,46 +158,39 @@
                 <div class="chart-bars">
                   <button type="button" class="region-group region-bar" data-region="prefrontal" aria-label="Prefrontal cortex region">
                     <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
-                    <span class="bar-value">Moderate</span>
                     <span class="bar-label">Focus</span>
                     <span class="bar-sub">Prefrontal</span>
                   </button>
 
                   <button type="button" class="region-group region-bar" data-region="amygdala" aria-label="Amygdala region">
                     <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
-                    <span class="bar-value">Moderate</span>
                     <span class="bar-label">Alarm</span>
                     <span class="bar-sub">Amygdala</span>
                   </button>
 
                   <button type="button" class="region-group region-bar" data-region="hippocampus" aria-label="Hippocampus region">
                     <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
-                    <span class="bar-value">Moderate</span>
                     <span class="bar-label">Recovery</span>
                     <span class="bar-sub">Hippocampus</span>
                   </button>
 
                   <button type="button" class="region-group region-bar" data-region="striatum" aria-label="Striatum region">
                     <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
-                    <span class="bar-value">Moderate</span>
                     <span class="bar-label">Reward</span>
                     <span class="bar-sub">Striatum</span>
                   </button>
 
                   <button type="button" class="region-group region-bar" data-region="insula" aria-label="Insula region">
                     <span class="bar-column" aria-hidden="true"><span class="bar-fill"></span></span>
-                    <span class="bar-value">Moderate</span>
                     <span class="bar-label">Body tension</span>
                     <span class="bar-sub">Insula</span>
                   </button>
                 </div>
               </div>
-
-              <p class="chart-note">Click a system bar to see what it may mean in plain language.</p>
             </div>
 
             <aside class="region-card" id="region-card">
-              <p class="kicker">Selected region</p>
+              <p class="card-label">Selected region</p>
               <h3 id="region-name">Prefrontal cortex</h3>
               <p id="region-effect">Helps with focus and emotional control.</p>
               <div class="region-metrics">
@@ -226,18 +209,26 @@
               </div>
             </aside>
           </div>
+
         </section>
 
-        <section class="panel timeline-panel">
+        <article class="panel current-phase-panel" aria-live="polite">
           <div class="panel-heading">
-            <p class="kicker">Treatment arc</p>
-            <h2>What tends to change first</h2>
+            <p class="kicker">Treatment timing</p>
+            <h2>Current phase</h2>
           </div>
+          <div class="stat-card current-phase-card">
+            <span class="card-label">Current phase</span>
+            <strong id="timeline-focus-title">Clinical response</strong>
+            <p class="current-phase-window" id="timeline-focus-week">Week 4 · Weeks 3 to 6</p>
+            <p id="timeline-focus-description">Clinical improvement often becomes more noticeable as regulation networks adapt.</p>
+            <p class="current-phase-summary" id="timeline-focus-summary">Regulation networks start having clearer day-to-day impact. Mood changes can become easier to notice and recover from.</p>
+          </div>
+        </article>
 
-          <div class="timeline-strip" id="timeline-strip" aria-label="Treatment timeline"></div>
-        </section>
+      </main>
 
-        <section class="panel explainer-panel">
+      <section class="panel explainer-panel">
           <details class="glossary-accordion">
             <summary>What do these terms mean?</summary>
             <div class="glossary-grid">
@@ -307,8 +298,7 @@
               </article>
             </div>
           </details>
-        </section>
-      </main>
+      </section>
     </div>
 
     <script src="./script.js"></script>

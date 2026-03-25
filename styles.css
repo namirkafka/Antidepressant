@@ -1,14 +1,14 @@
 :root {
   --bg: #f4efe5;
   --paper: rgba(255, 250, 241, 0.8);
-  --panel: rgba(255, 249, 240, 0.74);
+  --panel: rgba(255, 249, 240, 0.88);
   --ink: #1c1914;
   --muted: #5d5447;
   --accent: #d46d38;
   --accent-soft: #e7ac7f;
   --line: rgba(68, 52, 33, 0.14);
-  --shadow: 0 24px 60px rgba(57, 39, 20, 0.14);
-  --card-surface: rgba(255, 248, 239, 0.72);
+  --shadow: 0 14px 32px rgba(57, 39, 20, 0.1);
+  --card-surface: rgba(255, 248, 239, 0.9);
   --card-border: rgba(99, 70, 30, 0.08);
   --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.76);
   --region-low: #f2c893;
@@ -41,6 +41,80 @@ body {
     radial-gradient(circle at top left, rgba(255, 230, 188, 0.95), transparent 38%),
     radial-gradient(circle at right 20% bottom 10%, rgba(217, 113, 50, 0.16), transparent 28%),
     linear-gradient(160deg, #f8f2e7 0%, #eadfcd 100%);
+}
+
+body.ui-playful {
+  --playful-serotonin: #ffb347;
+  --playful-norepinephrine: #4bb3fd;
+  --playful-dopamine: #56c271;
+  --playful-prefrontal: #ffb347;
+  --playful-amygdala: #ff7a7a;
+  --playful-hippocampus: #66c2a5;
+  --playful-striatum: #4bb3fd;
+  --playful-insula: #c59cff;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255, 224, 166, 0.95), transparent 36%),
+    radial-gradient(circle at 88% 14%, rgba(206, 232, 255, 0.62), transparent 34%),
+    radial-gradient(circle at 70% 84%, rgba(223, 238, 191, 0.62), transparent 30%),
+    linear-gradient(160deg, #fff7ea 0%, #f6efe2 100%);
+}
+
+body.ui-playful .panel {
+  border-radius: 28px;
+}
+
+body.ui-playful h1 {
+  font-size: clamp(2.4rem, 5.8vw, 4.2rem);
+  line-height: 1.02;
+}
+
+body.ui-playful .kicker,
+body.ui-playful .eyebrow {
+  letter-spacing: 0.12em;
+}
+
+body.ui-playful .card-label {
+  letter-spacing: 0.04em;
+}
+
+body.ui-playful .chemical-label,
+body.ui-playful .bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+body.ui-playful .chemical-label::before,
+body.ui-playful .bar-label::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+body.ui-playful .chemical-bar[data-chemical="serotonin"] .chemical-label::before { background: var(--playful-serotonin); }
+body.ui-playful .chemical-bar[data-chemical="norepinephrine"] .chemical-label::before { background: var(--playful-norepinephrine); }
+body.ui-playful .chemical-bar[data-chemical="dopamine"] .chemical-label::before { background: var(--playful-dopamine); }
+
+body.ui-playful .region-bar[data-region="prefrontal"] .bar-label::before { background: var(--playful-prefrontal); }
+body.ui-playful .region-bar[data-region="amygdala"] .bar-label::before { background: var(--playful-amygdala); }
+body.ui-playful .region-bar[data-region="hippocampus"] .bar-label::before { background: var(--playful-hippocampus); }
+body.ui-playful .region-bar[data-region="striatum"] .bar-label::before { background: var(--playful-striatum); }
+body.ui-playful .region-bar[data-region="insula"] .bar-label::before { background: var(--playful-insula); }
+
+body.ui-playful .chemical-bar[data-chemical="serotonin"] .chemical-fill { background: var(--playful-serotonin); }
+body.ui-playful .chemical-bar[data-chemical="norepinephrine"] .chemical-fill { background: var(--playful-norepinephrine); }
+body.ui-playful .chemical-bar[data-chemical="dopamine"] .chemical-fill { background: var(--playful-dopamine); }
+
+body.ui-playful .region-bar[data-region="prefrontal"] .bar-fill { background: var(--playful-prefrontal); }
+body.ui-playful .region-bar[data-region="amygdala"] .bar-fill { background: var(--playful-amygdala); }
+body.ui-playful .region-bar[data-region="hippocampus"] .bar-fill { background: var(--playful-hippocampus); }
+body.ui-playful .region-bar[data-region="striatum"] .bar-fill { background: var(--playful-striatum); }
+body.ui-playful .region-bar[data-region="insula"] .bar-fill { background: var(--playful-insula); }
+
+body.ui-playful .explainer-panel {
+  display: none;
 }
 
 .page-shell {
@@ -183,7 +257,7 @@ h3 {
 }
 
 .panel {
-  border-radius: 30px;
+  border-radius: 24px;
   padding: var(--panel-pad);
 }
 
@@ -517,28 +591,13 @@ select {
   display: none;
 }
 
-.reset-button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 14px 16px;
-  border: 1px solid rgba(88, 64, 35, 0.12);
-  border-radius: 16px;
-  background: rgba(255, 252, 246, 0.96);
-  color: var(--ink);
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.reset-button:hover,
-.reset-button:focus-visible {
-  border-color: rgba(212, 109, 56, 0.36);
-  box-shadow: 0 10px 18px rgba(115, 61, 27, 0.08);
-}
-
 .summary-stack {
   display: grid;
   gap: 14px;
+}
+
+.gender-card.hidden {
+  display: none;
 }
 
 .summary-card,
@@ -839,10 +898,6 @@ select {
   gap: 12px;
 }
 
-.controls-panel .reset-button {
-  margin-top: 2px;
-}
-
 .systems-chart {
   width: 100%;
   border-radius: 34px;
@@ -1100,6 +1155,241 @@ select {
   gap: 12px;
   margin-top: 4px;
 }
+
+/* ── Profile onboarding modal ────────────────────────────── */
+
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(244, 239, 229, 0.92);
+  backdrop-filter: blur(3px);
+  overflow-y: auto;
+}
+
+.profile-overlay.hidden {
+  display: none;
+}
+
+.profile-modal {
+  width: min(560px, 100%);
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 70, 30, 0.12);
+  background: rgba(255, 252, 246, 0.97);
+  box-shadow: 0 10px 28px rgba(57, 39, 20, 0.12);
+  animation: profileSlideIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes profileSlideIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.profile-progress {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.profile-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(140, 112, 79, 0.22);
+  transition: background 240ms ease, transform 240ms ease;
+}
+
+.profile-dot.active {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+
+.profile-step {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-step.active {
+  display: flex;
+  animation: profileSlideIn 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.profile-eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  color: var(--accent);
+}
+
+.profile-title {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1.05;
+}
+
+.profile-subtitle {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  line-height: 1.45;
+  max-width: 50ch;
+}
+
+.profile-options {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-option {
+  appearance: none;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: left;
+  font: inherit;
+  font-size: var(--fs-base);
+  color: var(--ink);
+  background: var(--card-surface);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+  display: grid;
+  gap: 3px;
+}
+
+.profile-option strong {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  display: block;
+}
+
+.profile-option span {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  display: block;
+}
+
+.profile-option:hover,
+.profile-option:focus-visible {
+  border-color: rgba(212, 109, 56, 0.4);
+  box-shadow: 0 4px 10px rgba(115, 61, 27, 0.08);
+  background: rgba(255, 252, 248, 0.98);
+}
+
+.profile-option.selected {
+  border-color: var(--accent);
+  background: rgba(212, 109, 56, 0.07);
+  box-shadow: 0 0 0 2px rgba(212, 109, 56, 0.14);
+}
+
+.profile-option:focus-visible {
+  outline: 3px solid rgba(212, 109, 56, 0.34);
+  outline-offset: 3px;
+}
+
+.profile-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.profile-back {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 160ms ease;
+}
+
+.profile-back:hover {
+  color: var(--ink);
+}
+
+.profile-back.invisible {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.profile-next {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 11px 22px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.profile-next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.profile-next:not(:disabled):hover {
+  background: #b85a2a;
+  box-shadow: 0 10px 24px rgba(115, 61, 27, 0.22);
+}
+
+.profile-next:focus-visible {
+  outline: 3px solid rgba(212, 109, 56, 0.34);
+  outline-offset: 3px;
+}
+
+/* "Change profile" link in hero */
+.change-profile-link {
+  appearance: none;
+  border: 1px solid rgba(212, 109, 56, 0.28);
+  border-radius: 999px;
+  padding: 8px 18px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 14px;
+  display: inline-block;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.change-profile-link:hover,
+.change-profile-link:focus-visible {
+  border-color: var(--accent);
+  background: rgba(212, 109, 56, 0.06);
+}
+
+.change-profile-link:focus-visible {
+  outline: 3px solid rgba(212, 109, 56, 0.34);
+  outline-offset: 3px;
+}
+
+/* ── End profile modal ───────────────────────────────────── */
 
 @media (max-width: 1080px) {
   .dashboard {

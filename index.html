@@ -13,12 +13,73 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <!-- Profile onboarding modal -->
+    <div class="profile-overlay" id="profile-overlay" role="dialog" aria-modal="true" aria-label="Personalise your experience">
+      <div class="profile-modal">
+        <div class="profile-progress">
+          <span class="profile-dot active" data-step="0"></span>
+          <span class="profile-dot" data-step="1"></span>
+          <span class="profile-dot" data-step="2"></span>
+        </div>
+
+        <!-- Step 1: Age -->
+        <div class="profile-step active" id="profile-step-0">
+          <p class="profile-eyebrow">Step 1 of 3</p>
+          <h2 class="profile-title">How old are you?</h2>
+          <p class="profile-subtitle">We'll match the language to what feels natural for you.</p>
+          <div class="profile-options" role="group" aria-label="Age group">
+            <button type="button" class="profile-option" data-field="age" data-value="child">Under 13</button>
+            <button type="button" class="profile-option" data-field="age" data-value="teen">13 – 17</button>
+            <button type="button" class="profile-option" data-field="age" data-value="adult">18+</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Gender -->
+        <div class="profile-step" id="profile-step-1">
+          <p class="profile-eyebrow">Step 2 of 3</p>
+          <h2 class="profile-title">How do you identify?</h2>
+          <p class="profile-subtitle">Optional — this may be relevant as research sometimes notes differences.</p>
+          <div class="profile-options" role="group" aria-label="Gender identity">
+            <button type="button" class="profile-option" data-field="gender" data-value="female">Female</button>
+            <button type="button" class="profile-option" data-field="gender" data-value="male">Male</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Medical knowledge -->
+        <div class="profile-step" id="profile-step-2">
+          <p class="profile-eyebrow">Step 3 of 3</p>
+          <h2 class="profile-title">How familiar are you with medical topics?</h2>
+          <p class="profile-subtitle">We'll use this to decide how technical the descriptions are.</p>
+          <div class="profile-options" role="group" aria-label="Medical knowledge level">
+            <button type="button" class="profile-option" data-field="knowledge" data-value="beginner">
+              <strong>New to this</strong>
+              <span>Plain language, simple ideas</span>
+            </button>
+            <button type="button" class="profile-option" data-field="knowledge" data-value="some">
+              <strong>Some background</strong>
+              <span>I know a bit about how the brain works</span>
+            </button>
+            <button type="button" class="profile-option" data-field="knowledge" data-value="medical">
+              <strong>Medical professional</strong>
+              <span>I work in or study health sciences</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-nav">
+          <button type="button" class="profile-back" id="profile-back" aria-label="Go back">← Back</button>
+          <button type="button" class="profile-next" id="profile-next" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+
     <div class="page-shell">
       <header class="hero">
         <div class="hero-copy">
           <p class="eyebrow">Interactive neuroscience explainer</p>
           <h1>How <span class="tooltip-word" data-tooltip="Medications prescribed to treat depression and related conditions. They work by adjusting the availability of brain chemicals like serotonin, norepinephrine, and dopamine. Common classes include SSRIs, SNRIs, tricyclics, and atypicals.">antidepressants</span> can shift mood systems over time</h1>
           <p class="lede">A simple interactive guide to how treatment may affect emotion, stress, and motivation.</p>
+        <button type="button" class="change-profile-link" id="change-profile">Change my profile</button>
         </div>
       </header>
 
@@ -26,7 +87,7 @@
         <section class="panel controls-panel">
           <div class="panel-heading">
             <p class="kicker">Control panel</p>
-            <h2>Adjust the model</h2>
+            <h2 id="controls-title">Adjust the model</h2>
           </div>
 
           <label class="field">
@@ -40,7 +101,7 @@
           </label>
 
           <section class="treatment-help" aria-label="Treatment type explanation">
-            <span class="card-label">Medication profile</span>
+              <span class="card-label" id="med-profile-label">Medication profile</span>
             <strong id="treatment-name">SSRI</strong>
             <p id="treatment-description">Common first-line antidepressants that mainly affect serotonin.</p>
             <span class="card-meta" id="treatment-examples">Examples: sertraline, fluoxetine, escitalopram</span>
@@ -82,31 +143,35 @@
 
           <div class="summary-stack">
             <article class="summary-card summary-primary">
-              <span class="card-label">Biggest change right now</span>
+              <span class="card-label" id="biggest-change-label">Biggest change right now</span>
               <strong id="headline-summary">Alarm / anxiety system</strong>
               <p id="why-summary">Why: early treatment with a typical example and elevated stress makes this system stand out most.</p>
             </article>
 
             <div class="stats-grid">
               <article class="stat-card">
-                <span class="card-label">What this treatment usually does</span>
+                <span class="card-label" id="treatment-usual-label">What this treatment usually does</span>
                 <strong id="class-summary">Often dampens threat reactivity and supports mood stabilization.</strong>
               </article>
             </div>
-          </div>
 
-          <button type="button" class="reset-button" id="reset-model">Reset example</button>
+            <article class="stat-card gender-card hidden" id="gender-card" aria-live="polite">
+              <span class="card-label">Gender note</span>
+              <strong id="gender-card-title">Gender context</strong>
+              <p id="gender-card-text">Gender-related patterns can affect symptom trends and treatment response in some studies.</p>
+            </article>
+          </div>
         </section>
 
         <section class="panel visualization-panel">
           <div class="panel-heading">
             <p class="kicker">System levels</p>
-            <h2>Signals shift as the effect gets stronger</h2>
+            <h2 id="visualization-title">Signals shift as the effect gets stronger</h2>
           </div>
 
           <section class="chart-signals" aria-label="Main brain chemicals involved">
             <div class="chart-signals-header">
-              <strong>1. Chemicals this treatment targets</strong>
+              <strong id="chemicals-section-title">1. Chemicals this treatment targets</strong>
               <p class="signal-summary" id="chemical-summary">This class mainly targets serotonin. Those chemical shifts can then affect the system bars below.</p>
             </div>
             <div class="chemical-layout">
@@ -133,7 +198,7 @@
               </div>
 
               <aside class="chemical-card" id="chemical-card">
-                <p class="card-label">Chemical guide</p>
+                <p class="card-label" id="chemical-guide-label">Chemical guide</p>
                 <h3 id="chemical-name">Serotonin</h3>
                 <p id="chemical-description">Often linked to mood balance, worry, and emotional steadiness.</p>
                 <div class="region-metrics">
@@ -153,8 +218,8 @@
           <div class="brain-stage">
             <div class="systems-chart" role="group" aria-label="Interactive mood systems chart">
               <div class="systems-chart-head">
-                <strong>2. Brain systems that may shift</strong>
-                <p>These bars show the possible downstream effect in this simplified model.</p>
+                <strong id="systems-section-title">2. Brain systems that may shift</strong>
+                <p id="systems-section-text">These bars show the possible downstream effect in this simplified model.</p>
               </div>
               <div class="chart-frame">
                 <div class="chart-bars">
@@ -192,7 +257,7 @@
             </div>
 
             <aside class="region-card" id="region-card">
-              <p class="card-label">Selected region</p>
+              <p class="card-label" id="selected-region-label">Selected region</p>
               <h3 id="region-name">Prefrontal cortex</h3>
               <p id="region-effect">Helps with focus and emotional control.</p>
               <div class="region-metrics">
@@ -217,10 +282,10 @@
         <article class="panel current-phase-panel" aria-live="polite">
           <div class="panel-heading">
             <p class="kicker">Treatment timing</p>
-            <h2>Current phase</h2>
+            <h2 id="current-phase-title">Current phase</h2>
           </div>
           <div class="stat-card current-phase-card">
-            <span class="card-label">Current phase</span>
+            <span class="card-label" id="current-phase-label">Current phase</span>
             <strong id="timeline-focus-title">Clinical response</strong>
             <p class="current-phase-window" id="timeline-focus-week">Week 4 · Weeks 3 to 6</p>
             <p id="timeline-focus-description">Clinical improvement often becomes more noticeable as regulation networks adapt.</p>
@@ -301,8 +366,8 @@
             </div>
           </details>
       </section>
-    </div>
 
+    </div><!-- /.page-shell -->
     <script src="./script.js"></script>
   </body>
 </html>

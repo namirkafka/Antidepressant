@@ -27,6 +27,17 @@ const classSummary          = document.getElementById("class-summary");
 const genderCard            = document.getElementById("gender-card");
 const genderCardTitle       = document.getElementById("gender-card-title");
 const genderCardText        = document.getElementById("gender-card-text");
+const sideEffectsCard       = document.getElementById("side-effects-card");
+const sideEffectsTitle      = document.getElementById("side-effects-title");
+const sideEffectsText       = document.getElementById("side-effects-text");
+const sideEffectsNote       = document.getElementById("side-effects-note");
+const sidefxChart           = document.getElementById("sidefx-chart");
+const sidefxBars            = Array.from(document.querySelectorAll(".sidefx-bar"));
+const advancedPathways      = document.getElementById("advanced-pathways");
+const advancedGlutamateFill = document.getElementById("advanced-glutamate-fill");
+const advancedGabaFill      = document.getElementById("advanced-gaba-fill");
+const advancedGlutamateValue = document.getElementById("advanced-glutamate-value");
+const advancedGabaValue      = document.getElementById("advanced-gaba-value");
 const regionName            = document.getElementById("region-name");
 const regionEffect          = document.getElementById("region-effect");
 const regionLevel           = document.getElementById("region-level");
@@ -593,6 +604,143 @@ const genderCardContentByVariant = {
   },
 };
 
+const sideEffectsByVariant = {
+  playful: {
+    ssri: {
+      early: { title: "Most likely right now", text: "Mild stomach upset, sleep shifts, or headache can show up first." },
+      mid: { title: "Most likely right now", text: "Early side effects often settle. Some restlessness or low appetite can continue." },
+      late: { title: "Most likely right now", text: "Most side effects are lighter by now, but everyone is different." },
+    },
+    snri: {
+      early: { title: "Most likely right now", text: "Nausea, jittery feeling, or sweating can appear in the first weeks." },
+      mid: { title: "Most likely right now", text: "Energy changes or dry mouth may still happen for some people." },
+      late: { title: "Most likely right now", text: "Ongoing side effects are usually milder by this stage." },
+    },
+    atypical: {
+      early: { title: "Most likely right now", text: "Sleepiness or appetite changes can happen early depending on the medicine." },
+      mid: { title: "Most likely right now", text: "Daytime sedation or sleep changes may continue in some people." },
+      late: { title: "Most likely right now", text: "Many people have fewer side effects once dose and routine stabilize." },
+    },
+    tricyclic: {
+      early: { title: "Most likely right now", text: "Dry mouth, sleepiness, or dizziness are common at the start." },
+      mid: { title: "Most likely right now", text: "Constipation or grogginess can still be present in the mid phase." },
+      late: { title: "Most likely right now", text: "Some body side effects may persist longer than newer medicine types." },
+    },
+  },
+  casual: {
+    ssri: {
+      early: { title: "Most likely right now", text: "Nausea, headache, sleep disruption, or brief activation can appear in the first 1–2 weeks." },
+      mid: { title: "Most likely right now", text: "Early GI and sleep side effects often improve; residual restlessness or sexual side effects may persist." },
+      late: { title: "Most likely right now", text: "Persistent effects are usually milder, though sexual side effects can remain for some people." },
+    },
+    snri: {
+      early: { title: "Most likely right now", text: "Nausea, sweating, jitteriness, and sleep changes are common during early titration." },
+      mid: { title: "Most likely right now", text: "Dry mouth, sweating, and blood-pressure sensitivity may need monitoring as dose increases." },
+      late: { title: "Most likely right now", text: "Most acute effects settle; monitor ongoing autonomic effects if they persist." },
+    },
+    atypical: {
+      early: { title: "Most likely right now", text: "Side effects vary by agent: sedation, appetite changes, or activating effects may occur." },
+      mid: { title: "Most likely right now", text: "Agent-specific effects continue to guide dose adjustments (for example sedation vs activation)." },
+      late: { title: "Most likely right now", text: "After stabilization, side effects are often more predictable and manageable." },
+    },
+    tricyclic: {
+      early: { title: "Most likely right now", text: "Anticholinergic effects (dry mouth, constipation), sedation, and orthostatic dizziness are common early." },
+      mid: { title: "Most likely right now", text: "Sedation and autonomic effects may continue and often require careful dose balancing." },
+      late: { title: "Most likely right now", text: "Residual anticholinergic burden can persist; ongoing tolerability checks are important." },
+    },
+  },
+  clinical: {
+    ssri: {
+      early: { title: "Most likely right now", text: "Early serotonergic adverse effects: GI upset, insomnia/somnolence, headache, transient activation/anxiety." },
+      mid: { title: "Most likely right now", text: "Acute tolerability often improves by weeks 3–6; monitor persistent sexual dysfunction and akathisia-like activation." },
+      late: { title: "Most likely right now", text: "Longer-term profile is usually favorable; sexual adverse effects remain the most common persistent complaint." },
+    },
+    snri: {
+      early: { title: "Most likely right now", text: "Dual serotonergic/noradrenergic adverse effects: nausea, diaphoresis, insomnia, agitation, and sympathetic arousal." },
+      mid: { title: "Most likely right now", text: "Monitor dose-related autonomic effects (including BP/HR elevation), xerostomia, and sweating persistence." },
+      late: { title: "Most likely right now", text: "Acute adverse effects often attenuate; continued surveillance for sustained noradrenergic burden is recommended." },
+    },
+    atypical: {
+      early: { title: "Most likely right now", text: "Adverse-effect spectrum is mechanism dependent (e.g., sedation/weight gain vs activation/insomnia)." },
+      mid: { title: "Most likely right now", text: "Tolerability pattern clarifies with time; adjust strategy based on receptor-specific burden and symptom targets." },
+      late: { title: "Most likely right now", text: "Chronic effects reflect agent pharmacology and should be managed with ongoing individualized monitoring." },
+    },
+    tricyclic: {
+      early: { title: "Most likely right now", text: "High early anticholinergic and antihistaminic burden: xerostomia, constipation, sedation, orthostasis." },
+      mid: { title: "Most likely right now", text: "Cardiovascular and autonomic adverse effects may persist; dose/tolerability trade-offs are common." },
+      late: { title: "Most likely right now", text: "Residual anticholinergic/cardiac burden can remain clinically relevant; sustained monitoring is advised." },
+    },
+  },
+};
+
+const sideEffectsIntensityProfiles = {
+  ssri: {
+    nausea:   [0.58, 0.55, 0.5, 0.43, 0.38, 0.34, 0.3, 0.28, 0.26, 0.24, 0.23, 0.22, 0.21],
+    sleep:    [0.52, 0.56, 0.54, 0.49, 0.45, 0.42, 0.39, 0.37, 0.35, 0.34, 0.33, 0.32, 0.31],
+    anxiety:  [0.5, 0.53, 0.5, 0.45, 0.41, 0.37, 0.34, 0.32, 0.3, 0.29, 0.28, 0.27, 0.26],
+    headache: [0.47, 0.49, 0.46, 0.41, 0.37, 0.33, 0.3, 0.28, 0.27, 0.26, 0.24, 0.23, 0.22],
+    sexual:   [0.26, 0.28, 0.31, 0.35, 0.39, 0.43, 0.47, 0.5, 0.53, 0.55, 0.56, 0.57, 0.58],
+  },
+  snri: {
+    nausea:   [0.62, 0.59, 0.55, 0.48, 0.43, 0.39, 0.35, 0.32, 0.3, 0.28, 0.27, 0.26, 0.25],
+    sleep:    [0.54, 0.58, 0.56, 0.52, 0.48, 0.45, 0.42, 0.39, 0.37, 0.36, 0.35, 0.34, 0.33],
+    anxiety:  [0.56, 0.6, 0.57, 0.52, 0.47, 0.43, 0.4, 0.37, 0.35, 0.34, 0.33, 0.31, 0.3],
+    headache: [0.5, 0.53, 0.5, 0.45, 0.4, 0.36, 0.33, 0.31, 0.29, 0.28, 0.27, 0.26, 0.25],
+    sexual:   [0.24, 0.27, 0.3, 0.34, 0.38, 0.42, 0.46, 0.5, 0.53, 0.55, 0.56, 0.57, 0.58],
+  },
+  atypical: {
+    nausea:   [0.42, 0.4, 0.38, 0.35, 0.32, 0.3, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+    sleep:    [0.6, 0.62, 0.6, 0.56, 0.52, 0.49, 0.46, 0.44, 0.43, 0.42, 0.4, 0.39, 0.38],
+    anxiety:  [0.4, 0.43, 0.42, 0.39, 0.36, 0.34, 0.32, 0.31, 0.3, 0.29, 0.28, 0.27, 0.26],
+    headache: [0.38, 0.39, 0.38, 0.35, 0.32, 0.3, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+    sexual:   [0.2, 0.21, 0.23, 0.25, 0.27, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36],
+  },
+  tricyclic: {
+    nausea:   [0.45, 0.44, 0.42, 0.4, 0.37, 0.35, 0.33, 0.31, 0.3, 0.29, 0.28, 0.27, 0.26],
+    sleep:    [0.66, 0.68, 0.66, 0.62, 0.58, 0.54, 0.5, 0.47, 0.45, 0.44, 0.43, 0.42, 0.4],
+    anxiety:  [0.34, 0.36, 0.35, 0.33, 0.31, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22],
+    headache: [0.37, 0.38, 0.37, 0.35, 0.33, 0.31, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23],
+    sexual:   [0.3, 0.33, 0.35, 0.38, 0.41, 0.44, 0.47, 0.49, 0.51, 0.53, 0.54, 0.55, 0.56],
+  },
+};
+
+const advancedPathwayProfiles = {
+  ssri: {
+    glutamate: [0.32, 0.31, 0.3, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.34, 0.35, 0.35, 0.36],
+    gaba: [0.38, 0.39, 0.4, 0.42, 0.43, 0.44, 0.45, 0.46, 0.46, 0.47, 0.47, 0.48, 0.48],
+  },
+  snri: {
+    glutamate: [0.34, 0.33, 0.32, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.36, 0.37, 0.37, 0.38],
+    gaba: [0.36, 0.37, 0.39, 0.4, 0.42, 0.43, 0.44, 0.45, 0.45, 0.46, 0.47, 0.47, 0.48],
+  },
+  atypical: {
+    glutamate: [0.35, 0.34, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.39, 0.4, 0.4, 0.41],
+    gaba: [0.34, 0.35, 0.36, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.43, 0.44, 0.44, 0.45],
+  },
+  tricyclic: {
+    glutamate: [0.3, 0.3, 0.29, 0.29, 0.3, 0.31, 0.31, 0.32, 0.33, 0.33, 0.34, 0.34, 0.35],
+    gaba: [0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.47, 0.48, 0.48, 0.49, 0.49],
+  },
+};
+
+function sideEffectsLevelLabel(value) {
+  if (value < 0.35) return "Low";
+  if (value < 0.62) return "Moderate";
+  return "High";
+}
+
+function advancedPathwayLevelLabel(value) {
+  if (value < 0.35) return "Low";
+  if (value < 0.62) return "Moderate";
+  return "High";
+}
+
+function sideEffectsPhaseForWeek(week) {
+  if (week <= 2) return "early";
+  if (week <= 6) return "mid";
+  return "late";
+}
+
 function updateGenderCard(uiStyle) {
   if (!genderCard || !genderCardTitle || !genderCardText) return;
 
@@ -613,6 +761,108 @@ function updateGenderCard(uiStyle) {
   genderCardTitle.textContent = content.title;
   genderCardText.textContent = content.text;
   genderCard.classList.remove("hidden");
+}
+
+function updateSideEffectsCard(medication, week, uiStyle) {
+  if (!sideEffectsCard || !sideEffectsTitle || !sideEffectsText || !sideEffectsNote) return;
+
+  if (uiStyle !== "standard") {
+    sideEffectsCard.classList.add("hidden");
+    return;
+  }
+
+  const phase = sideEffectsPhaseForWeek(week);
+  const variantData = sideEffectsByVariant[currentLanguageVariant];
+  const content = variantData?.[medication]?.[phase];
+
+  if (!content) {
+    sideEffectsCard.classList.add("hidden");
+    return;
+  }
+
+  sideEffectsTitle.textContent = content.title;
+  sideEffectsText.textContent = content.text;
+  sideEffectsNote.textContent =
+    currentLanguageVariant === "playful"
+      ? "If this feels hard to handle, talk to your doctor."
+      : "If side effects are severe, persistent, or concerning, contact your clinician.";
+  sideEffectsCard.classList.remove("hidden");
+}
+
+function updateSideEffectsBars({ medication, week, doseValue, stressValue, uiStyle }) {
+  if (!sidefxChart || !sidefxBars.length) return;
+
+  if (uiStyle !== "standard") {
+    sidefxChart.classList.add("hidden");
+    return;
+  }
+
+  const medProfile = sideEffectsIntensityProfiles[medication];
+  if (!medProfile) {
+    sidefxChart.classList.add("hidden");
+    return;
+  }
+
+  sidefxChart.classList.remove("hidden");
+
+  const doseModifier = doseValue === 1 ? -0.08 : doseValue === 3 ? 0.08 : 0;
+  const stressAnxietyModifier = stressValue === 1 ? -0.07 : stressValue === 3 ? 0.09 : 0.03;
+  const stressSleepModifier = stressValue === 1 ? -0.05 : stressValue === 3 ? 0.07 : 0.02;
+  const stressGeneralModifier = stressValue === 1 ? -0.02 : stressValue === 3 ? 0.03 : 0;
+
+  sidefxBars.forEach((bar) => {
+    const key = bar.dataset.sidefx;
+    const fill = bar.querySelector(".sidefx-fill");
+    const valueLabel = bar.querySelector(".sidefx-value");
+    const base = medProfile[key]?.[week] ?? 0.2;
+
+    const stressModifier =
+      key === "anxiety" ? stressAnxietyModifier :
+      key === "sleep" ? stressSleepModifier :
+      stressGeneralModifier;
+
+    const adjusted = clamp(base + doseModifier + stressModifier, 0.08, 0.92);
+
+    if (fill) fill.style.width = `${Math.round(adjusted * 100)}%`;
+    if (valueLabel) valueLabel.textContent = sideEffectsLevelLabel(adjusted);
+  });
+}
+
+function updateAdvancedPathways({ medication, week, doseValue, stressValue }) {
+  if (
+    !advancedPathways ||
+    !advancedGlutamateFill ||
+    !advancedGabaFill ||
+    !advancedGlutamateValue ||
+    !advancedGabaValue
+  ) {
+    return;
+  }
+
+  if (currentLanguageLevel !== "complex") {
+    advancedPathways.classList.add("hidden");
+    return;
+  }
+
+  const profile = advancedPathwayProfiles[medication];
+  if (!profile) {
+    advancedPathways.classList.add("hidden");
+    return;
+  }
+
+  advancedPathways.classList.remove("hidden");
+
+  const doseModifier = doseValue === 1 ? -0.04 : doseValue === 3 ? 0.04 : 0;
+  const glutamateStressModifier = stressValue === 1 ? -0.03 : stressValue === 3 ? 0.05 : 0.01;
+  const gabaStressModifier = stressValue === 1 ? 0.02 : stressValue === 3 ? -0.03 : 0;
+
+  const glutamate = clamp(profile.glutamate[week] + doseModifier + glutamateStressModifier, 0.08, 0.92);
+  const gaba = clamp(profile.gaba[week] + doseModifier + gabaStressModifier, 0.08, 0.92);
+
+  advancedGlutamateFill.style.width = `${Math.round(glutamate * 100)}%`;
+  advancedGabaFill.style.width = `${Math.round(gaba * 100)}%`;
+  advancedGlutamateValue.textContent = advancedPathwayLevelLabel(glutamate);
+  advancedGabaValue.textContent = advancedPathwayLevelLabel(gaba);
 }
 
 const medicationProfiles = {
@@ -907,6 +1157,7 @@ function updateVisualization() {
   const week       = Number(timelineInput.value);
   const doseValue  = Number(doseStrengthInput.value);
   const stressValue = Number(stressLevelInput.value);
+  const uiStyle    = getUiStyle();
   const profile    = medicationProfiles[medication];
   const medVariant = activeMedVariant[medication];
   const dose       = describeDose(doseValue);
@@ -956,6 +1207,9 @@ function updateVisualization() {
   whySummary.textContent      = buildWhySummary(week, dose, stress, strongestRegion);
   updateRegionCard(values);
   updateCurrentPhase(week);
+  updateSideEffectsCard(medication, week, uiStyle);
+  updateSideEffectsBars({ medication, week, doseValue, stressValue, uiStyle });
+  updateAdvancedPathways({ medication, week, doseValue, stressValue });
 }
 
 // ── Control event listeners ───────────────────────────────────────────────────

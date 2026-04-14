@@ -213,6 +213,28 @@
                 </div>
               </aside>
             </div>
+            <section class="advanced-pathways hidden" id="advanced-pathways" aria-label="Advanced pathways">
+              <div class="advanced-pathways-head">
+                <strong>Advanced pathways</strong>
+                <p>Additional circuit-level signals that can influence response beyond monoamines.</p>
+              </div>
+              <div class="advanced-pathways-bars">
+                <article class="advanced-pathway-bar">
+                  <span class="advanced-pathway-label">Glutamate</span>
+                  <div class="advanced-pathway-track" aria-hidden="true">
+                    <span class="advanced-pathway-fill" id="advanced-glutamate-fill"></span>
+                  </div>
+                  <span class="advanced-pathway-value" id="advanced-glutamate-value">Moderate</span>
+                </article>
+                <article class="advanced-pathway-bar">
+                  <span class="advanced-pathway-label">GABA</span>
+                  <div class="advanced-pathway-track" aria-hidden="true">
+                    <span class="advanced-pathway-fill" id="advanced-gaba-fill"></span>
+                  </div>
+                  <span class="advanced-pathway-value" id="advanced-gaba-value">Moderate</span>
+                </article>
+              </div>
+            </section>
           </section>
 
           <div class="brain-stage">
@@ -291,6 +313,41 @@
             <p id="timeline-focus-description">Clinical improvement often becomes more noticeable as regulation networks adapt.</p>
             <p class="current-phase-summary" id="timeline-focus-summary">Regulation networks start having clearer day-to-day impact. Mood changes can become easier to notice and recover from.</p>
           </div>
+          <article class="stat-card side-effects-card hidden" id="side-effects-card" aria-live="polite">
+            <span class="card-label">Side effects</span>
+            <strong id="side-effects-title">Most likely right now</strong>
+            <p id="side-effects-text">Effects can vary. This card shows common patterns for the current medication and week.</p>
+            <section class="sidefx-chart" id="sidefx-chart" aria-label="Side effects intensity chart">
+              <div class="sidefx-bars">
+                <div class="sidefx-bar" data-sidefx="nausea">
+                  <span class="sidefx-column" aria-hidden="true"><span class="sidefx-fill" id="sidefx-fill-nausea"></span></span>
+                  <span class="sidefx-label">Nausea</span>
+                  <span class="sidefx-value" id="sidefx-value-nausea">Low</span>
+                </div>
+                <div class="sidefx-bar" data-sidefx="sleep">
+                  <span class="sidefx-column" aria-hidden="true"><span class="sidefx-fill" id="sidefx-fill-sleep"></span></span>
+                  <span class="sidefx-label">Sleep</span>
+                  <span class="sidefx-value" id="sidefx-value-sleep">Low</span>
+                </div>
+                <div class="sidefx-bar" data-sidefx="anxiety">
+                  <span class="sidefx-column" aria-hidden="true"><span class="sidefx-fill" id="sidefx-fill-anxiety"></span></span>
+                  <span class="sidefx-label">Anxiety</span>
+                  <span class="sidefx-value" id="sidefx-value-anxiety">Low</span>
+                </div>
+                <div class="sidefx-bar" data-sidefx="headache">
+                  <span class="sidefx-column" aria-hidden="true"><span class="sidefx-fill" id="sidefx-fill-headache"></span></span>
+                  <span class="sidefx-label">Headache</span>
+                  <span class="sidefx-value" id="sidefx-value-headache">Low</span>
+                </div>
+                <div class="sidefx-bar" data-sidefx="sexual">
+                  <span class="sidefx-column" aria-hidden="true"><span class="sidefx-fill" id="sidefx-fill-sexual"></span></span>
+                  <span class="sidefx-label">Sexual</span>
+                  <span class="sidefx-value" id="sidefx-value-sexual">Low</span>
+                </div>
+              </div>
+            </section>
+            <p class="side-effects-note" id="side-effects-note">If side effects feel intense or persistent, check in with your clinician.</p>
+          </article>
         </article>
 
       </main>
